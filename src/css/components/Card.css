@@ -1,0 +1,36 @@
+.maincardcontainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8%;
+}
+img {
+    max-width: 40%;
+    height: auto;
+    border-radius: 4px;
+}
+  
+.text {
+    background-color: white;
+    margin-top: 12px;
+}
+  
+.text p {
+    font-size: 16px;
+    color: #333;
+    font-size: 12px;
+}
+@media (max-width: 720px) {
+    .maincardcontainer{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 8%;
+    }
+}
+  

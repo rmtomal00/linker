@@ -1,0 +1,9 @@
+
+.notfound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Full viewport height */
+    text-align: center; /* Center text if it spans multiple lines */
+}
+  

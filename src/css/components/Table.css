@@ -1,0 +1,17 @@
+table{
+  width: 100%;
+}
+th{
+  padding: 5px;
+  border: 1px solid rgb(231, 231, 231);
+  background-color: #a8fff3;
+  text-transform: capitalize;
+  color: rgb(6, 53, 53);
+}
+td{
+  padding: 4px;
+  margin: 0;
+  padding-left: 10px;
+  border: 1px solid rgb(231, 231, 231);
+  color: rgb(6, 53, 53);
+}

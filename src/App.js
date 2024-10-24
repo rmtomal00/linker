@@ -8,22 +8,25 @@ import Price from './routes/Price'
 import Login from './routes/Login'
 import Dashboard from './routes/Dashboard';
 import NotFound from './routes/NotFound';
+import AuthProvider from './Context/AuthContext';
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element = {<Layout/>}>
-          <Route index element = {<Home/>}/>
-          <Route path='/home' element={<Home/>}/>
-          <Route path='/about' element={<About/>}/>
-          <Route path='/contact' element={<Contact/>}/>
-          <Route path='/price' element={<Price/>}/>
-          <Route path='/dashboard' element={<Dashboard/>}/>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='*' element={<NotFound/>}/>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element = {<Layout/>}>
+                <Route index element = {<Home/>}/>
+                <Route path='/home' element={<Home/>}/>
+                <Route path='/about' element={<About/>}/>
+                <Route path='/contact' element={<Contact/>}/>
+                <Route path='/price' element={<Price/>}/>
+                <Route path='/dashboard' element={<Dashboard/>}/>
+                <Route path='/login' element={<Login/>}/>
+                <Route path='*' element={<NotFound/>}/>
+              </Route>
+            </Routes>
+          </BrowserRouter>
+    </AuthProvider>
     
   );
 }

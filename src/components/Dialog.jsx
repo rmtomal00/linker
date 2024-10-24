@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import "../css/components/Dialog.css";
 
-const DialogComponent = ({ open, handleClose, forgetpassword, setProgessOpen}) => {
+const DialogComponent = ({ open, handleClose, setProgessOpen, dataFunction, bool}) => {
   const [inputValue, setInputValue] = useState('');
   
 
@@ -13,10 +13,14 @@ const DialogComponent = ({ open, handleClose, forgetpassword, setProgessOpen}) =
   };
   const hendleSubmit =()=>{
     console.log(inputValue);
-    console.log(forgetpassword);
     setInputValue('')
     setProgessOpen(true)
     handleClose()
+    const data = {
+      email: inputValue,
+      forgetpass: bool
+    }
+    dataFunction(data)
   }
 
 

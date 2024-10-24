@@ -50,12 +50,43 @@ p{
     width: 100%;
 }
 
+.show-short-url{
+    margin-top: 20px;
+    margin-bottom: 0px;
+    margin-left: 3px;
+    margin-right: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.invisible-short-url{
+    display: none;
+}
+
+.url-link-short{
+    font-family: serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(228, 91, 0);
+    text-shadow: 1px 2px 10px rgb(228, 91, 0) ;
+}
+.cpy-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* margin-top: 3px; */
+    margin-left: 20px;
+    background-color: rgb(235, 219, 0);
+    padding: 7px;
+    border-radius: 5px;
+}
+
 @media (max-width: 720px) {
     .cards{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-    
     }
 }

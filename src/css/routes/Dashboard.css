@@ -115,7 +115,11 @@
 }
 
 .title-unique{
-    font-size: 13px;
+    font-size: 16px;
+}
+
+.s-li-lst-tb{
+    overflow-x: auto;
 }
 
 @media (max-width: 720px) {

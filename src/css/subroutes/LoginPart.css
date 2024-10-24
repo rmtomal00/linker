@@ -61,6 +61,34 @@
     font-family: "Exo 2";
     font-size: large;
 }
+.error-msg{
+    color: red;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: sans-serif;
+    font-size: large;
+}
+.error-msg{
+    color: rgb(255, 0, 0);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: sans-serif;
+}
+.success-msg{
+    color: rgb(51, 255, 0);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: sans-serif;
+}
+.disable-content-error{
+    display: none;
+}
+.enable-content-error{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 .loginsubmitbutton:hover{
     background-color: rgb(17, 192, 204);
@@ -70,6 +98,9 @@
 }
 .vri-email-sector:hover{
     color: rgb(211, 211, 211);
+}
+.signup-submit{
+    margin-top: 13px;
 }
 
 @media (max-width: 720px) {

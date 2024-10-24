@@ -43,11 +43,12 @@ ul {
 }
 
 .a{
+    display: flex;
+    justify-content: center;
     padding: 10px;
     text-decoration: none;
     color: wheat;
 }
-
 li {
     display: flex;
     flex-direction: row;

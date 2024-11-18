@@ -21,6 +21,7 @@ const Contact = () =>{
           <div>
             <h1>My App</h1>
             <button onClick={handleOpen}>test</button>
+            <input type="date" name="" id="" />
             <DialogResponse open={open} onCloseDialog={hideDia} title={"Successfull"} content={"Email not found"}/>
           </div>
       </div>

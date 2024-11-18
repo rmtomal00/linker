@@ -119,7 +119,12 @@
 }
 
 .s-li-lst-tb{
+    width: 100%;
+    max-width: 100%;
     overflow-x: auto;
+    height: auto;
+    max-height: 100%;
+    overflow-y: hidden;
 }
 
 @media (max-width: 720px) {

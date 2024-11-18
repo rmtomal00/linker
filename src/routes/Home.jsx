@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProgressDialog from '../components/Loading';
 
 
 
@@ -19,6 +20,7 @@ const Home = () =>{
     const [inputValue, setInputValue] = useState('')
     const [showurlcontainer, setShowUrlContainer] = useState('invisible-short-url')
     const [url, setUrl] = useState('');
+    const [progress, setProgress] = useState(false)
 
     const onGetText = (value)=>{
         setInputValue(value)
@@ -38,6 +40,7 @@ const Home = () =>{
         }
         const token = Cookies.get("team71.link")
         if (token) {
+            setProgress(true)
             fetch("http://192.168.2.106:2056/api/v1/users/short-link",{
                 method: 'POST',
                 headers: {
@@ -57,6 +60,7 @@ const Home = () =>{
                     setShowUrlContainer("show-short-url");
                     setUrl(result.data.shortLink)
                 }
+                setProgress(false)
             }).catch((error)=>console.log(error))
         }else{
             notifyError("You need to login for create a short link");
@@ -65,6 +69,7 @@ const Home = () =>{
     return(
         <div className="maincontainer">
             <ToastContainer/>
+            <ProgressDialog open={progress}/>
             <div className="header">
                 <h1>Create a Short URLs</h1>
                 <p><span>Team 71</span> is the best <i>link shorter</i> for free.</p>

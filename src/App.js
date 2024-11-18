@@ -9,6 +9,7 @@ import Login from './routes/Login'
 import Dashboard from './routes/Dashboard';
 import NotFound from './routes/NotFound';
 import AuthProvider from './Context/AuthContext';
+import History from './routes/History';
 function App() {
   return (
     <AuthProvider>
@@ -22,6 +23,7 @@ function App() {
                 <Route path='/price' element={<Price/>}/>
                 <Route path='/dashboard' element={<Dashboard/>}/>
                 <Route path='/login' element={<Login/>}/>
+                <Route path='/history' element={<History/>}/>
                 <Route path='*' element={<NotFound/>}/>
               </Route>
             </Routes>

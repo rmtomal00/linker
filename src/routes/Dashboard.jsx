@@ -11,19 +11,23 @@ import Footer from '../components/Footer'
 import Cookies from 'js-cookie';
 import {format, addDays, subDays} from 'date-fns'
 import { ToastContainer, toast } from 'react-toastify';
-import { da } from 'date-fns/locale';
+import ProgressDialog from '../components/Loading';
 
 
 
 const Dashboard = () =>{
 
     const [date, setDate] = React.useState()
-    const [tableData, setTableData] = React.useState()
+    const [tableData, setTableData] = React.useState([])
     const [startDate, setStartDate] = React.useState()
+    const [chartData, setChartData] = React.useState({keyData: [], values: []});
     const [profile, setProfile] = React.useState({"plan": "free","username": "demo","email": "demo@gmail.com","valid": null,"lastUpdate": "2024-10-22T01:08:40.000Z","count": 0})
     const st = format(addDays(new Date(), 1), "yyyy-MM-dd")
     const ed = format(subDays(new Date(), 8), "yyyy-MM-dd")
+    const [progress, setProgress] = React.useState(false)
     const [totalData, setTotalData] = React.useState({})
+
+
 
     const baseUrl = 'http://192.168.2.106:2056'
 
@@ -39,29 +43,124 @@ const Dashboard = () =>{
           categories: ["date", "date", "date", "date", "date", "date", "date", "date", "date", "date", "date", "date", "date"],
         },
     };
+
+
     const series = [
     {
         name: 'click',
         data: [30, 40, 45, 50, 49, 60, 70, 91, 125, 5, 4, 100,700],
     },
     ];
+
+
     var jsonData = [
-        { "name": "Demo", "age": 30, "city": "New York" },
-        { "name": "Demo", "age": 25, "city": "Los Angeles" },
-        { "name": "Demo", "age": 35, "city": "Chicago" }
+        {
+            "ID": 1,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 11,
+            "UNIQUE CLICK": 4
+        },
+        {
+            "ID": 2,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 3,
+            "UNIQUE CLICK": 1
+        },
+        {
+            "ID": 3,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 4,
+            "UNIQUE CLICK": 1
+        },
+        {
+            "ID": 4,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 1,
+            "UNIQUE CLICK": 1
+        },
+        {
+            "ID": 5,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 1,
+            "UNIQUE CLICK": 1
+        },
+        {
+            "ID": 6,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 1,
+            "UNIQUE CLICK": 1
+        },
+        {
+            "ID": 7,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 1,
+            "UNIQUE CLICK": 1
+        },
+        {
+            "ID": 8,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 1,
+            "UNIQUE CLICK": 1
+        },
+        {
+            "ID": 9,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 1,
+            "UNIQUE CLICK": 1
+        },
+        {
+            "ID": 10,
+            "LINK": "demo",
+            "SHORT ID": "demo",
+            "SHORT LINK": "demo",
+            "CREATE AT": "22.10.2024",
+            "CREATE WITH": "website",
+            "CLICK": 1,
+            "UNIQUE CLICK": 1
+        },
       ];
 
     
-      
-      const getuserData =(std,end)=>{
-
-        
-        
-    }
-
-    //Profile
     React.useEffect(() => {
         if (token) {
+            setProgress(true)
+            //get profile
             fetch(`${baseUrl}/api/v1/users/user-profile`, {
                 method: 'POST',
                 headers: {
@@ -92,44 +191,179 @@ const Dashboard = () =>{
                 console.error("Fetch error:", err);
                 errorToast("Failed to fetch user profile.");
             });
+
+            //get all link with history
+            fetch(`${baseUrl}/api/v1/users/get-link-history`, {
+                method: 'POST',
+                headers:{
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    startDate: ed,
+                    endDate: st
+                })
+            }).then((response)=> response.json())
+            .then((result)=>{
+                if(!result.err){
+                    //console.log(result.data);
+                    const dta = result.data
+                    if(!dta.data.length <= 0 ){
+                        setTableData(dta.data)
+                    }else{
+                        errorToast("Short Link not found")
+                    }
+                    if(dta.click){
+                        setTotalData(dta.click)
+                    }else{
+                        errorToast("Click history not found")
+                    }
+                    
+                }else{
+                    errorToast("User Some data can't load")
+                }
+            }).catch((error)=>console.log(error))
+
+            console.log(`start: ${st}, end: ${ed}`);
+            
+            fetch(`${baseUrl}/api/v1/users/get-history-daily`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "startDate": ed,
+                    "endDate": st
+                })
+            }).then((response)=> response.json())
+            .then((result)=>{
+                if (!result.err) {
+                    const keys = [];
+                    const counts = [];
+                    const array = result.data;
+                
+                    // Extract keys and counts from response data
+                    array.forEach((object) => {
+                        keys.push(object.day);
+                        counts.push(object.count);
+                    });
+                
+                    // Set chartData based on the keys and counts
+                    if (!keys.length <= 0) {
+                        setChartData((prev) => ({
+                            ...prev,
+                            keyData: keys.length > 0 ? keys : [],
+                            values: counts.length > 0 ? counts : []
+                        }));
+                    }else{
+                        errorToast("Chart data not found")
+                    }
+                } else {
+                    errorToast(result.message);
+                }
+                setProgress(false)
+            }).catch((error)=>{
+                console.log(error);
+            })
         } else {
-            console.log("token null");
+           // console.log("token null");
             errorToast("Token not found");
         }
-        fetch(`${baseUrl}/api/v1/users/get-link-history`, {
-            method: 'POST',
-            headers:{
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                startDate: ed,
-                endDate: st
-            })
-        }).then((response)=> response.json())
-        .then((result)=>{
-            if(!result.err){
-                //console.log(result.data);
-                const dta = result.data
-                setTableData(dta.data)
-                setTotalData(dta.click)
-                
-            }else{
-                errorToast("User Some data can't load")
-            }
-        }).catch((error)=>console.log(error))
     }, [token, st, ed]);
 
 
     const takeData = ()=>{
         console.log(`Start Data: ${startDate}, End Date: ${date}`);
+        setProgress(true)
+        if (startDate > date) {
+            const teamp = startDate;
+            setStartDate(date);
+            setDate(teamp)
+            errorToast("Please click again now.")
+            setProgress(false)
+            return
+        }
+        const formattedStartDate = format(startDate, "yyyy-MM-dd");
+        const formattedEndDate = format(addDays(date, 1), "yyyy-MM-dd");
+
+        if (token) {
+            // Call /api/v1/users/get-link-history
+            fetch(`${baseUrl}/api/v1/users/get-link-history`, {
+                method: 'POST',
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    startDate: formattedStartDate,
+                    endDate: formattedEndDate
+                })
+            })
+            .then((response) => response.json())
+            .then((result) => {
+                if (!result.err) {
+                    const dta = result.data;
+                    setTableData(dta.data.length > 0 ? dta.data : []);
+                    setTotalData(dta.click || {});
+                } else {
+                    errorToast("Failed to load link history");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching link history:", error);
+                errorToast("Error loading link history");
+            });
         
+            // Call /api/v1/users/get-history-daily
+            fetch(`${baseUrl}/api/v1/users/get-history-daily`, {
+                method: 'POST',
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    startDate: formattedStartDate,
+                    endDate: formattedEndDate
+                })
+            })
+            .then((response) => response.json())
+            .then((result) => {
+                if (!result.err) {
+                    const keys = [];
+                    const counts = [];
+                    result.data.forEach((object) => {
+                        keys.push(object.day);
+                        counts.push(object.count);
+                    });
+        
+                    setChartData({
+                        keyData: keys.length > 0 ? keys : [],
+                        values: counts.length > 0 ? counts : []
+                    });
+                } else {
+                    errorToast("Failed to load daily history");
+                }
+                setProgress(false)
+            })
+            .catch((error) => {
+                console.error("Error fetching daily history:", error);
+                errorToast("Error loading daily history");
+            });
+            
+        }else{
+            errorToast("Token not found")
+            setProgress(false)
+        }
+    
+        console.log(`Start Date: ${formattedStartDate}, End Date: ${formattedEndDate}`);
     }
     return(
         <div className="da-m-contain">
             <div className="da-h-con">
                 
                 <div className="das-us-info">
+                    <ProgressDialog open={progress}/>
                     <ToastContainer/>
                     <div className="da-us-img">
                         <img src={UsersIcon} alt='usersInfo' className='da-u-img'/>
@@ -138,8 +372,8 @@ const Dashboard = () =>{
                         <li className="das-u-li">{`Username: ${profile.username}`}</li>
                         <li className="das-u-li">{`Email: ${profile.email}`}</li>
                         <li className="das-u-li">{`Plan: ${profile.plan}`}</li>
-                        <li className="das-u-li">{`Valid: ${!profile.valid ? "No Subscription" : format(profile.valid, "dd.mm.yyyy") }`}</li>
-                        <li className="das-u-li">{`Last Subscription: ${format(profile.lastUpdate, 'dd.mm.yyyy')}`}</li>
+                        <li className="das-u-li">{`Valid: ${!profile.valid ? "No Subscription" : format(profile.valid, "dd.MM.yyyy") }`}</li>
+                        <li className="das-u-li">{`Last Subscription: ${format(profile.lastUpdate, 'dd.MM.yyyy')}`}</li>
                         <li className="das-u-li">{`Total ShortLink: ${profile.count}/month`}</li>
                     </ol>
                     <div className="sub-btn-section">
@@ -172,7 +406,10 @@ const Dashboard = () =>{
                         </div>
                     </div>
                     <div className="das-lnk-grp">
-                        <BarChart options={options} series={series}/>
+                    <BarChart 
+                        options={chartData.keyData.length <= 0 ? options : { ...options, xaxis: { categories: chartData.keyData } }} 
+                        series={chartData.values.length <= 0 ? series : [{ name: 'click', data: chartData.values }]}
+                    />
                     </div>
                     <div className="das-total-analysis">
                         <div className="das-gard">
@@ -195,7 +432,7 @@ const Dashboard = () =>{
                         </div>
                     </div>
                     <div className="s-li-lst-tb">
-                        <Table data={!tableData ? jsonData: tableData}/>
+                        <Table data={(tableData.length <= 0) ? jsonData : tableData}/>
                     </div>
                 </div>
             </div>
